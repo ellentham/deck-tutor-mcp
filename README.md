@@ -80,17 +80,7 @@ If you skip the split, save the rules as `magic-comprehensive-rules.txt` or `mag
 
 This MCP works on its own.
 
-**Install from npm:**
-
-```bash
-npm install deck-tutor-mcp
-```
-
-Then add to Cursor MCP settings (see [Cursor Integration](#cursor-integration) below), using `npx deck-tutor-mcp` as the command or pointing to `node_modules/deck-tutor-mcp/dist/index.js`.
-
-**Or copy/clone and run locally:**
-
-1. **Copy the entire `deck-tutor-mcp` folder** (or clone a repo containing only this package).
+1. **Copy the entire `deck-tutor-mcp` folder** (or clone the repo).
 
 2. **Install and run:**
 
@@ -122,20 +112,7 @@ npm run dev
 
 Add to Cursor MCP settings (`.cursor/mcp.json` or Cursor Settings → MCP).
 
-**Option A — Installed via npm (in your project):**
-
-```json
-{
-  "mcpServers": {
-    "deck-tutor": {
-      "command": "npx",
-      "args": ["deck-tutor-mcp"]
-    }
-  }
-}
-```
-
-**Option B — Run from deck-tutor-mcp directory (standalone):**
+**Option A — Run from deck-tutor-mcp directory:**
 
 ```json
 {
