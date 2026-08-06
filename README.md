@@ -110,31 +110,84 @@ npm run dev
 
 ## Cursor Integration
 
-Add to Cursor MCP settings (`.cursor/mcp.json` or Cursor Settings → MCP).
+Deck Tutor works in the **Cursor IDE**, **Agent Window**, **CLI**, **Cloud Agents**, and **mobile app**. Pick the setup that matches where you work.
 
-**Option A — Run from deck-tutor-mcp directory:**
+### Quick install (desktop)
 
-```json
-{
-  "mcpServers": {
-    "deck-tutor": {
-      "command": "node",
-      "args": ["dist/index.js"],
-      "cwd": "/path/to/deck-tutor-mcp"
-    }
-  }
-}
+Run `npm run install-link` to print a one-click install deeplink, or open this link on a machine with Cursor installed:
+
+```text
+cursor://anysphere.cursor-deeplink/mcp/install?name=deck-tutor&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsImdpdGh1YjplbGxlbnRoYW0vZGVjay10dXRvci1tY3AiXX0=
 ```
 
-Run `npm run build` first, or use `tsx` to run without building:
+That registers a **user-level** MCP server (available in every workspace on that machine).
+
+### General workspace (all projects on desktop)
+
+**Option A — Cursor plugin (recommended):** Install the plugin from **Customize** in the Cursor sidebar. This repo includes a plugin manifest (`.cursor-plugin/plugin.json`) and bundled `mcp.json`, so Deck Tutor is available across your general workspace without per-repo setup.
+
+1. Open **Customize** in the sidebar.
+2. Install from this repository (local test: symlink to `~/.cursor/plugins/local/deck-tutor`, then reload Cursor).
+3. Enable the **deck-tutor** MCP server in Customize.
+
+**Option B — User-level `mcp.json`:** Add to `~/.cursor/mcp.json`:
 
 ```json
 {
   "mcpServers": {
     "deck-tutor": {
       "command": "npx",
-      "args": ["tsx", "src/index.ts"],
-      "cwd": "/path/to/deck-tutor-mcp"
+      "args": ["-y", "github:ellentham/deck-tutor-mcp"]
+    }
+  }
+}
+```
+
+After publishing to npm, you can use `"args": ["-y", "deck-tutor-mcp"]` instead.
+
+### Mobile and Cloud Agents (iPhone, iPad, cursor.com/agents)
+
+Cloud agents and the mobile app **do not** read `.cursor/mcp.json` from your repo. Add Deck Tutor as a **personal MCP server** in the Cursor dashboard:
+
+1. Open [cursor.com/agents](https://cursor.com/agents) or **Dashboard → Integrations & MCP**.
+2. Add a new **stdio** MCP server named `deck-tutor`.
+3. Use this configuration:
+
+```json
+{
+  "command": "npx",
+  "args": ["-y", "github:ellentham/deck-tutor-mcp"]
+}
+```
+
+4. On mobile, **select `deck-tutor` when starting a run** (MCP servers are chosen per run on mobile).
+5. No API keys are required. The server uses the public Scryfall API for card lookups.
+
+> **Note:** MCP management is on the web; mobile only lets you pick servers at launch. Once configured in the dashboard, the same server is available on phone, web, and desktop cloud agents.
+
+### This repository (local development)
+
+When working in a clone of this repo, `.cursor/mcp.json` runs the built server from the workspace:
+
+```json
+{
+  "mcpServers": {
+    "deck-tutor": {
+      "command": "node",
+      "args": ["dist/index.js"]
+    }
+  }
+}
+```
+
+Run `npm install && npm run build` first. For development without building:
+
+```json
+{
+  "mcpServers": {
+    "deck-tutor": {
+      "command": "npx",
+      "args": ["tsx", "src/index.ts"]
     }
   }
 }
