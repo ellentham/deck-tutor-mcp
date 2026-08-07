@@ -28,7 +28,7 @@ const CREATURE_TYPE_PATTERNS = [
 
 /** Mechanics to detect in oracle text */
 const MECHANIC_PATTERNS: Array<{ pattern: RegExp; term: string }> = [
-  { pattern: /\+1\/\+1\s*counter/gi, term: 'o:"+1/+1"' },
+  { pattern: /\+1\/\+1\s*counter/i, term: 'o:"+1/+1"' },
   { pattern: /\bproliferate\b/i, term: 'o:proliferate' },
   { pattern: /\b(?:create|put)\s+.*\s+token/i, term: 'o:token' },
   { pattern: /\btoken\s+(?:creature|creatures)/i, term: 'o:token' },

@@ -247,7 +247,13 @@ function createServer(): McpServer {
               suggestedQuery: result.suggestedQuery,
             }
         const text = JSON.stringify(output, null, 2)
-        return { content: [{ type: 'text' as const, text }] }
+        if ('error' in output && output.error) {
+          return { content: [{ type: 'text' as const, text }], isError: true }
+        }
+        return {
+          structuredContent: output,
+          content: [{ type: 'text' as const, text }],
+        }
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err)
         const text = JSON.stringify(
@@ -265,7 +271,7 @@ function createServer(): McpServer {
           null,
           2
         )
-        return { content: [{ type: 'text' as const, text }] }
+        return { content: [{ type: 'text' as const, text }], isError: true }
       }
     }
   )
