@@ -9,6 +9,7 @@
  *
  * Creates:
  *   - resources/sections/724-the-monarch.md (one file per major section)
+ *   - resources/sections/glossary.md
  *   - resources/sections/index.json (rule number -> filename mapping)
  */
 
@@ -60,9 +61,25 @@ async function main() {
     sections.push({ num, title, start, end: 0 })
   }
 
-  // Set end index for each section (start of next, or end of file)
+  // The Glossary and Credits follow the last numbered section. Without an explicit
+  // terminator the final section swallows both (~120KB), so locate the real Glossary
+  // heading — the one after the last section start, not the table-of-contents entry.
+  const lastSectionStart = sections.length > 0 ? sections[sections.length - 1].start : 0
+  const headingIndex = (heading: string, after: number): number => {
+    const re = new RegExp(`^${heading}[ \\t]*$`, 'gm')
+    let match: RegExpExecArray | null
+    while ((match = re.exec(normalized)) !== null) {
+      if (match.index >= after) return match.index
+    }
+    return -1
+  }
+  const glossaryStart = headingIndex('Glossary', lastSectionStart)
+  const creditsStart = glossaryStart >= 0 ? headingIndex('Credits', glossaryStart) : -1
+  const rulesEnd = glossaryStart >= 0 ? glossaryStart : normalized.length
+
+  // Set end index for each section (start of next, or end of the numbered rules)
   for (let i = 0; i < sections.length; i++) {
-    sections[i].end = i + 1 < sections.length ? sections[i + 1].start : normalized.length
+    sections[i].end = i + 1 < sections.length ? sections[i + 1].start : rulesEnd
   }
 
   const index: Record<string, string> = {}
@@ -80,6 +97,14 @@ async function main() {
     const filepath = join(SECTIONS_DIR, filename)
     await writeFile(filepath, sectionText, 'utf-8')
     index[num] = filename
+    written++
+  }
+
+  if (glossaryStart >= 0) {
+    const glossaryEnd = creditsStart >= 0 ? creditsStart : normalized.length
+    const glossary = normalized.slice(glossaryStart, glossaryEnd).trim()
+    await writeFile(join(SECTIONS_DIR, 'glossary.md'), glossary, 'utf-8')
+    index.glossary = 'glossary.md'
     written++
   }
 
