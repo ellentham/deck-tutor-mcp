@@ -147,11 +147,12 @@ After publishing to npm, you can use `"args": ["-y", "deck-tutor-mcp"]` instead.
 
 ### Mobile and Cloud Agents (iPhone, iPad, cursor.com/agents)
 
-Cloud agents and the mobile app **do not** read `.cursor/mcp.json` from your repo. Add Deck Tutor as a **personal MCP server** in the Cursor dashboard:
+Cloud agents and the mobile app **do not** read `.cursor/mcp.json` from your repo. Add Deck Tutor as a **personal MCP server** in the Cursor web UI:
 
-1. Open [cursor.com/agents](https://cursor.com/agents) or **Dashboard → Integrations & MCP**.
-2. Add a new **stdio** MCP server named `deck-tutor`.
-3. Use this configuration:
+1. Open [cursor.com/agents](https://cursor.com/agents) and start or open an agent chat.
+2. Click the **`+`** button to the left of the prompt bar.
+3. Choose **Add files, skills, and MCP servers** → **MCP Servers** → **Add MCP**.
+4. Add a **stdio** server named `deck-tutor` with this configuration:
 
 ```json
 {
@@ -160,10 +161,10 @@ Cloud agents and the mobile app **do not** read `.cursor/mcp.json` from your rep
 }
 ```
 
-4. On mobile, **select `deck-tutor` when starting a run** (MCP servers are chosen per run on mobile).
-5. No API keys are required. The server uses the public Scryfall API for card lookups.
+5. On mobile, **enable `deck-tutor` when starting a run** via the same **`+`** menu (MCP servers are chosen per run on mobile).
+6. No API keys are required. The server uses the public Scryfall API for card lookups.
 
-> **Note:** MCP management is on the web; mobile only lets you pick servers at launch. Once configured in the dashboard, the same server is available on phone, web, and desktop cloud agents.
+> **Note:** MCP management lives on the web UI (`+` menu), not in the mobile app settings. Once configured, the same server is available on phone, web, and desktop cloud agents.
 
 ### This repository (local development)
 
