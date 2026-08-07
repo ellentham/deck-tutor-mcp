@@ -18,13 +18,35 @@ export interface ExtractedStrategy {
   suggestedQuery: string
 }
 
-/** Creature types commonly referenced in oracle text */
-const CREATURE_TYPE_PATTERNS = [
-  /\b(?:Angel|Demon|Dragon)s?\b/gi,
-  /\b(?:Elf|Faerie|Goblin|Vampire|Squirrel|Human|Wizard|Warrior)s?\b/gi,
-  /\b(?:Dragon|Elemental|Horror|Phyrexian)s?\b/gi,
-  /\b(?:Bird|Beast|Spirit|Zombie)s?\b/gi,
-]
+/**
+ * Subtypes that appear on the type line but aren't creature types worth querying,
+ * plus supertypes and card types that precede the em dash.
+ */
+const NON_CREATURE_SUBTYPES = new Set([
+  'legendary',
+  'basic',
+  'snow',
+  'world',
+  'creature',
+  'artifact',
+  'enchantment',
+  'land',
+  'planeswalker',
+  'instant',
+  'sorcery',
+  'battle',
+  'token',
+  'tribal',
+  'kindred',
+])
+
+/**
+ * Creature types referenced in oracle text. Scryfall exposes the type line, so
+ * types are read from there; this list only catches tribes a card cares about
+ * without being one (e.g. a non-Elf Elf lord).
+ */
+const ORACLE_TYPE_PATTERN =
+  /\b(?:Angel|Archon|Artificer|Assassin|Avatar|Beast|Berserker|Bird|Cat|Cleric|Construct|Demon|Dinosaur|Dragon|Drake|Druid|Dwarf|Elder|Eldrazi|Elemental|Elf|Faerie|Fungus|Giant|Goblin|God|Golem|Horror|Human|Hydra|Insect|Knight|Kraken|Merfolk|Minotaur|Monk|Mutant|Ninja|Orc|Ooze|Phyrexian|Pirate|Plant|Rat|Rebel|Rogue|Saproling|Samurai|Scout|Shaman|Shapeshifter|Skeleton|Slith|Sliver|Snake|Soldier|Specter|Spider|Spirit|Squirrel|Thopter|Treefolk|Troll|Vampire|Warlock|Warrior|Werewolf|Wizard|Wolf|Wraith|Wurm|Zombie)s?\b/gi
 
 /** Mechanics to detect in oracle text */
 const MECHANIC_PATTERNS: Array<{ pattern: RegExp; term: string }> = [
@@ -35,7 +57,9 @@ const MECHANIC_PATTERNS: Array<{ pattern: RegExp; term: string }> = [
   { pattern: /\bsacrifice\b/i, term: 'o:sacrifice' },
   { pattern: /\bdraw\s+(?:a\s+)?card/i, term: 'o:draw' },
   { pattern: /\bexile\b/i, term: 'o:exile' },
-  { pattern: /\bcounter\b/i, term: 'o:counter' },
+  // Scryfall's o:counter matches "+1/+1 counter" too, so it added noise to every
+  // counters-matter card. Match counterspells specifically instead.
+  { pattern: /\bcounter\s+(?:target|that|it|all|each)\b/i, term: 'o:"counter target"' },
 ]
 
 /** Trigger patterns */
@@ -60,17 +84,30 @@ function colorIdentityToScryfall(colors: string[]): string {
 
 function extractCreatureTypes(text: string, typeLine: string): string[] {
   const seen = new Set<string>()
-  const combined = `${text} ${typeLine}`.toLowerCase()
 
-  for (const re of CREATURE_TYPE_PATTERNS) {
-    const matches = combined.match(re)
-    if (matches) {
-      for (const m of matches) {
-        const normalized = m.replace(/s$/, '') // "Dragons" -> "Dragon"
-        if (normalized.length > 2) seen.add(normalized.toLowerCase())
-      }
+  // The type line is authoritative: everything after the em dash is a subtype.
+  // Split on "//" first so both faces of a modal/transforming card contribute.
+  for (const face of typeLine.split('//')) {
+    // Only creature faces carry creature types; land/artifact subtypes such as
+    // "Urza's Power-Plant" are not tribes worth querying.
+    if (!/\bcreature\b/i.test(face)) continue
+    const subtypes = /[—–]\s*(.+)$/.exec(face)?.[1]
+    if (!subtypes) continue
+    for (const word of subtypes.trim().split(/\s+/)) {
+      const normalized = word.toLowerCase().replace(/[^a-z'-]/g, '')
+      if (normalized.length > 2 && !NON_CREATURE_SUBTYPES.has(normalized)) seen.add(normalized)
     }
   }
+
+  // Tribes named in oracle text matter too (e.g. a lord that isn't itself an Elf).
+  const matches = text.match(ORACLE_TYPE_PATTERN)
+  if (matches) {
+    for (const m of matches) {
+      const normalized = m.toLowerCase().replace(/s$/, '')
+      if (normalized.length > 2) seen.add(normalized)
+    }
+  }
+
   return [...seen]
 }
 

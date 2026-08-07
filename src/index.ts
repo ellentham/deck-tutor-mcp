@@ -24,6 +24,19 @@ const __dirname = dirname(__filename)
 
 const RESOURCES_DIR = join(__dirname, '..', 'resources')
 
+/**
+ * Read from package.json so the advertised version can't drift from the published
+ * one — cloud clients cache npx installs by version, so a stale value hides updates.
+ */
+async function getPackageVersion(): Promise<string> {
+  try {
+    const pkg = await readFile(join(__dirname, '..', 'package.json'), 'utf-8')
+    return (JSON.parse(pkg) as { version?: string }).version ?? '0.0.0'
+  } catch {
+    return '0.0.0'
+  }
+}
+
 const RESOURCE_DEFINITIONS = [
   {
     name: 'synergy-criteria',
@@ -156,11 +169,11 @@ async function readResourceContent(relativePath: string): Promise<string> {
   }
 }
 
-function createServer(): McpServer {
+function createServer(version: string): McpServer {
   const server = new McpServer(
     {
       name: 'deck-tutor-mcp',
-      version: '1.0.0',
+      version,
     },
     {
       capabilities: {
@@ -261,12 +274,14 @@ function createServer(): McpServer {
     {
       title: 'Lookup Comprehensive Rule',
       description:
-        'Returns a small chunk of the Magic Comprehensive Rules by rule number (e.g. 724 for The Monarch) or keyword search. Use instead of fetching the full ~950KB document. Provide ruleNumber for exact section, or keyword to find sections mentioning a term.',
+        'Returns a small chunk of the Magic Comprehensive Rules by rule number (e.g. 724 for The Monarch) or keyword search. Use instead of fetching the full ~950KB document. Provide ruleNumber for an exact section or subrule, or keyword to find sections mentioning a term. Very large sections (701, 702) return a subrule outline; request a subrule such as "702.19" (Trample) for the full text.',
       inputSchema: z.object({
         ruleNumber: z
           .string()
           .optional()
-          .describe('Rule section number, e.g. "724" for The Monarch, "701" for Keyword Actions'),
+          .describe(
+            'Rule section or subrule number, e.g. "724" for The Monarch, "701" for Keyword Actions, "702.19" for Trample'
+          ),
         keyword: z
           .string()
           .optional()
@@ -305,10 +320,11 @@ function createServer(): McpServer {
 }
 
 async function main(): Promise<void> {
-  const server = createServer()
+  const version = await getPackageVersion()
+  const server = createServer(version)
   const transport = new StdioServerTransport()
   await server.connect(transport)
-  console.error('Deck Tutor MCP server running on stdio')
+  console.error(`Deck Tutor MCP server v${version} running on stdio`)
 }
 
 main().catch((err) => {

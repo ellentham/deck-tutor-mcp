@@ -22,11 +22,13 @@ MCP server that provides Magic: The Gathering deck-building context for AI agent
 | Tool | Description |
 |------|--------------|
 | `extract_strategy_from_card` | Fetches a card from Scryfall by name and extracts deck-building strategy from its oracle text. Returns creature types, mechanics, triggers, power/toughness, and Scryfall query fragments. Use for Commander (extract from commander) or any deck where a key card defines the strategy. |
-| `lookup_comprehensive_rule` | Returns a small chunk of the Magic Comprehensive Rules by rule number or keyword. Use instead of fetching the full ~950KB document. |
+| `lookup_comprehensive_rule` | Returns a small chunk of the Magic Comprehensive Rules by rule number, subrule, or keyword. Use instead of fetching the full ~950KB document. |
 
 **extract_strategy_from_card** — Input: `cardName` (string). Output: `colorIdentity`, `creatureTypes`, `mechanics`, `triggers`, `scryfallQueryFragments`, `suggestedQuery`, etc.
 
 **lookup_comprehensive_rule** — Input: `ruleNumber` (optional, e.g. `"724"` for The Monarch) or `keyword` (optional, e.g. `"monarch"`, `"trample"`). Returns the matching rule section(s) as markdown.
+
+`ruleNumber` also accepts a subrule, e.g. `"702.19"` for Trample. The two keyword sections are far too large to return whole (702 is ~145KB), so they return an outline of their subrules — which doubles as an index of every keyword ability — and you request the subrule you need from it. Keyword searches are capped at 12 sections and report how many were omitted.
 
 ---
 
@@ -67,7 +69,7 @@ The `lookup_comprehensive_rule` tool returns small chunks instead of the full ~9
    cd deck-tutor-mcp && npm run split-rules
    ```
    Or: `npx tsx scripts/splitComprehensiveRules.ts`
-4. This creates `resources/sections/` with one file per rule (e.g. `724-the-monarch.md`) and an `index.json`. Lookups read only the needed file (~1–5 KB) instead of the full document.
+4. This creates `resources/sections/` with one file per rule (e.g. `724-the-monarch.md`), a `glossary.md`, and an `index.json`. Lookups read only the needed file (~1–5 KB) instead of the full document.
 5. Restart the MCP server (e.g. restart Cursor or reload MCP) so it picks up the split sections.
 
 ### Option B — Full file only
@@ -98,6 +100,14 @@ cd deck-tutor-mcp
 npm install
 npm run dev
 ```
+
+To verify a build, run the smoke test. It drives the built server as a real MCP client over stdio and checks the handshake, every resource, both tools, and their error paths. Card lookups hit the live Scryfall API, so it needs network access.
+
+```bash
+npm run build && npm run smoke
+```
+
+To check the published install path that `mcp.json` uses (`npx -y github:...`), run `npm run check-npx`.
 
 3. **Required files to ship:**
    - `package.json`
