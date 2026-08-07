@@ -201,23 +201,6 @@ function createServer(): McpServer {
       inputSchema: z.object({
         cardName: z.string().describe('Card name (fuzzy match supported, e.g. "Maralen, Fae Ascendant" or "Animar")'),
       }),
-      outputSchema: z.object({
-        cardName: z.string(),
-        colorIdentity: z.array(z.string()),
-        colorIdentityScryfall: z.string(),
-        creatureTypes: z.array(z.string()),
-        mechanics: z.array(z.string()),
-        triggers: z.array(z.string()),
-        powerToughness: z
-          .object({
-            power: z.number().optional(),
-            toughness: z.number().optional(),
-          })
-          .optional(),
-        scryfallQueryFragments: z.array(z.string()),
-        suggestedQuery: z.string(),
-        error: z.string().optional(),
-      }),
     },
     async (args) => {
       const { cardName } = args as { cardName: string }
@@ -250,10 +233,7 @@ function createServer(): McpServer {
         if ('error' in output && output.error) {
           return { content: [{ type: 'text' as const, text }], isError: true }
         }
-        return {
-          structuredContent: output,
-          content: [{ type: 'text' as const, text }],
-        }
+        return { content: [{ type: 'text' as const, text }] }
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err)
         const text = JSON.stringify(
