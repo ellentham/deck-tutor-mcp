@@ -165,6 +165,8 @@ Cloud agents and the mobile app **do not** read `.cursor/mcp.json` from your rep
 6. No API keys are required. The server uses the public Scryfall API for card lookups.
 
 > **Note:** MCP management lives on the web UI (`+` menu), not in the mobile app settings. Once configured, the same server is available on phone, web, and desktop cloud agents.
+>
+> **After updating this MCP server**, start a **new cloud agent run** so the VM installs the latest version (`npx` caches by package version).
 
 ### This repository (local development)
 
