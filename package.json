@@ -15,6 +15,7 @@
     "dev": "tsx src/index.ts",
     "split-rules": "tsx scripts/splitComprehensiveRules.ts",
     "smoke": "node scripts/smokeTest.mjs",
+    "check-npx": "node scripts/npxCheck.mjs",
     "prepublishOnly": "npm run build",
     "install-link": "node scripts/generateInstallLink.mjs"
   },
