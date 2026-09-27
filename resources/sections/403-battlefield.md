@@ -6,8 +6,6 @@
 
 403.3. Permanents exist only on the battlefield. Every object on the battlefield is a permanent. See rule 110, “Permanents.”
 
-403.4. Whenever a permanent enters the battlefield, it becomes a new object and has no relationship to any previous permanent represented by the same card, except for the cases listed in rule
-
-400.7. (This is also true for any objects entering any zone.)
+403.4. Whenever a permanent enters the battlefield, it becomes a new object and has no relationship to any previous permanent represented by the same card, except for the cases listed in rule 400.7. (This is also true for any objects entering any zone.)
 
 403.5. Previously, the battlefield was called the “in-play zone.” Cards that were printed with text that contains the phrases “in play,” “from play,” “into play,” or the like are referring to the battlefield. Cards that were printed with that text have received errata in the Oracle card reference.

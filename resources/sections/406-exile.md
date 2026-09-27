@@ -4,10 +4,10 @@
 
 406.2. To exile an object is to put it into the exile zone from whatever zone it’s currently in. An exiled card is a card that’s been put into the exile zone.
 
-406.3. Exiled cards are, by default, kept face up and may be examined by any player at any time. Cards “exiled face down” can’t be examined by any player except when instructions allow it. However, if a player is instructed to look at a card and then exile it face down, or once a player is allowed to look at a card exiled face down, that player may continue to look at that card until it leaves the exile zone or is part of a pile of cards that are shuffled, even if the instruction allowing the player to do so no longer applies. 
- 
-406.3a A card exiled face down has no characteristics, but the spell or ability that exiled it may allow it to be played from exile. Unless that card is being cast face down (see rule 708.4), the card is turned face up just before the player announces that they are playing the card (see rule 601.2). 
- 
+406.3. Exiled cards are, by default, kept face up and may be examined by any player at any time. Cards “exiled face down” can’t be examined by any player except when instructions allow it. However, if a player is instructed to look at a card and then exile it face down, or once a player is allowed to look at a card exiled face down, that player may continue to look at that card until it leaves the exile zone or is part of a pile of cards that are shuffled, even if the instruction allowing the player to do so no longer applies.
+ 
+406.3a A card exiled face down has no characteristics, but the spell or ability that exiled it may allow it to be played from exile. Unless that card is being cast face down (see rule 708.4), the card is turned face up just before the player announces that they are playing the card (see rule 601.2).
+ 
 406.3b Some spells and abilities allow a player to cast spells with certain qualities from among face-down cards in exile. A player may cast such a spell only if they are allowed to look at the face-down card in exile and if the resulting spell has the specified qualities.
 
 406.4. Face-down cards in exile should be kept in separate piles based on when they were exiled and how they were exiled. If a player is instructed to choose an exiled card, the player may choose a specific face-down card only if the player is allowed to look at that card. Otherwise, they may choose a pile of face-down exiled cards, and then a card is chosen at random from within that pile. If choosing such a card is part of casting a spell or activating an ability, the chosen card isn’t revealed until after that cost is fully paid. (See rule 601.2i.)

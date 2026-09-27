@@ -1,25 +1,25 @@
 119. Life
 
-119.1. Each player begins the game with a starting life total of 20. Some variant games have different starting life totals. 
- 
-119.1a In a Two-Headed Giant game, each team’s starting life total is 30. See rule 810, “Two-Headed Giant Variant.” 
- 
-119.1b In a Vanguard game, each player’s starting life total is 20 plus or minus the life modifier of their vanguard card. See rule 902, “Vanguard.” 
- 
+119.1. Each player begins the game with a starting life total of 20. Some variant games have different starting life totals.
+ 
+119.1a In a Two-Headed Giant game, each team’s starting life total is 30. See rule 810, “Two-Headed Giant Variant.”
+ 
+119.1b In a Vanguard game, each player’s starting life total is 20 plus or minus the life modifier of their vanguard card. See rule 902, “Vanguard.”
+ 
 119.1c In a Commander game, each player’s starting life total is 40. See rule 903, “Commander.”
 
-119.1d. In a two-player Brawl game, each player’s starting life total is 25. In a multiplayer Brawl game, each player’s starting life total is 30. See rule 903.12, “Brawl Option.” 
- 
+119.1d. In a two-player Brawl game, each player’s starting life total is 25. In a multiplayer Brawl game, each player’s starting life total is 30. See rule 903.12, “Brawl Option.”
+ 
 119.1e In an Archenemy game, the archenemy’s starting life total is 40. See rule 904, “Archenemy.”
 
-119.2. Damage dealt to a player normally causes that player to lose that much life. See rule
+119.2. Damage dealt to a player normally causes that player to lose that much life. See rule 120.3.
 
-120.3. 119.3. If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly.
+119.3. If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly.
 
-119.4. If a cost or effect allows a player to pay an amount of life greater than 0, the player may do so only if their life total is greater than or equal to the amount of the payment. If a player pays life, the payment is subtracted from their life total; in other words, the player loses that much life. 
- 
-119.4a If a cost or effect allows a player to pay an amount of life greater than 0 in a Two-Headed Giant game, the player may do so only if their team’s life total is greater than or equal to the total amount of life both team members are paying for that cost or effect. If a player pays life, the payment is subtracted from their team’s life total. 
- 
+119.4. If a cost or effect allows a player to pay an amount of life greater than 0, the player may do so only if their life total is greater than or equal to the amount of the payment. If a player pays life, the payment is subtracted from their life total; in other words, the player loses that much life.
+ 
+119.4a If a cost or effect allows a player to pay an amount of life greater than 0 in a Two-Headed Giant game, the player may do so only if their team’s life total is greater than or equal to the total amount of life both team members are paying for that cost or effect. If a player pays life, the payment is subtracted from their team’s life total.
+ 
 119.4b Players can always pay 0 life, no matter what their (or their team’s) life total is, and even if an effect says players can’t pay life.
 
 119.5. If an effect sets a player’s life total to a specific number, the player gains or loses the necessary amount of life to end up with the new total.

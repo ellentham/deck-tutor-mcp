@@ -89,9 +89,9 @@ async function main() {
     let sectionText = normalized.slice(start, end).trim()
     // Skip TOC entries: real sections have subrules (e.g. "724.1.")
     if (!new RegExp(`\\b${num}\\.1\\.`).test(sectionText)) continue
-    // Add newlines between subrules for readability
-    sectionText = sectionText.replace(/\s+(\d{3}\.\d+[a-z]?\.)\s+/g, '\n\n$1 ')
-    sectionText = sectionText.replace(/\s+(\d{3}\.\d+\.)\s+/g, '\n\n$1 ')
+    // Only break on this section's own subrules so citations like
+    // "See rule 704.5e." or "See rule 707.10." stay inline.
+    sectionText = sectionText.replace(new RegExp(`\\s+(${num}\\.\\d+[a-z]?\\.)\\s+`, 'g'), '\n\n$1 ')
 
     const filename = `${slugify(num, title)}.md`
     const filepath = join(SECTIONS_DIR, filename)
